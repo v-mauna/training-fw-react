@@ -1,9 +1,12 @@
 {
   "name": "tea-taster",
+  "description": "Tea Tasting Notes",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@capacitor/android": "~2.4.2",
     "@capacitor/core": "2.4.2",
+    "@capacitor/ios": "~2.4.2",
     "@ionic/react": "^5.0.7",
     "@ionic/react-router": "^5.0.7",
     "@testing-library/jest-dom": "^4.2.4",
@@ -24,10 +27,13 @@
     "typescript": "3.8.3"
   },
   "scripts": {
+    "build": "react-scripts build && cap copy",
+    "eject": "react-scripts eject",
     "start": "react-scripts start",
-    "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test:ci": "export CI=true; react-scripts test",
+    "test:cov": "export CI=true; react-scripts test --coverage",
+    "test:upd": "export CI=true; react-scripts test --updateSnapshot"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -45,7 +51,15 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "2.4.2"
+    "@capacitor/cli": "2.4.2",
+    "@ionic/prettier-config": "~1.0.1",
+    "husky": "~4.3.0",
+    "pretty-quick": "~3.0.2"
   },
-  "description": "An Ionic project"
+  "prettier": "@ionic/prettier-config",
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
 }
