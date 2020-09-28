@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   IonCard,
   IonCardContent,
@@ -17,6 +17,7 @@ import {
 import { Tea } from '../shared/models';
 
 import './TeaPage.css';
+import { AuthService, IdentityService } from '../core/services';
 
 export const teaData: Array<Tea> = [
   {
@@ -104,6 +105,14 @@ export const listToMatrix = (): Array<Array<Tea>> => {
 };
 
 const TeaPage: React.FC = () => {
+  useEffect(() => {
+    const init = async () => {
+      await AuthService.getInstance().login('test@test.com', 'test');
+      console.log(IdentityService.getInstance().user);
+    };
+    init();
+  }, []);
+
   return (
     <IonPage>
       <IonHeader>
