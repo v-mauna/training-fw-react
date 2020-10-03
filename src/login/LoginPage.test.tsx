@@ -1,7 +1,14 @@
 import React from 'react';
-import { render, wait, waitForElement } from '@testing-library/react';
+import {
+  render,
+  wait,
+  waitForDomChange,
+  waitForElement,
+} from '@testing-library/react';
 import { ionFireEvent as fireEvent } from '@ionic/react-test-utils';
 import LoginPage from './LoginPage';
+import { AuthProvider } from '../core/auth';
+import { AuthService } from '../core/services';
 
 describe('<LoginPage />', () => {
   it('displays the header', async () => {
@@ -59,6 +66,13 @@ describe('<LoginPage />', () => {
   });
 
   describe('error messages', () => {
+    let authService: AuthService;
+
+    beforeEach(() => {
+      authService = AuthService.getInstance();
+      authService.login = jest.fn(() => Promise.resolve(false));
+    });
+
     it('starts with no error message', async () => {
       const { container } = render(<LoginPage />);
       const errorDiv = await waitForElement(
@@ -67,7 +81,7 @@ describe('<LoginPage />', () => {
       expect(errorDiv.textContent).toEqual('');
     });
 
-    it('dsiplays an error message if the e-mail address is dirty and empty', async () => {
+    it('displays an error message if the e-mail address is dirty and empty', async () => {
       const expected = /E-Mail Address is required/;
       const { container } = render(<LoginPage />);
       const [errorDiv, email] = await waitForElement(() => [
@@ -104,6 +118,29 @@ describe('<LoginPage />', () => {
       await wait(() => {
         fireEvent.ionChange(password, 'P@ssword123');
         fireEvent.ionChange(password, '');
+      });
+      expect(errorDiv).toHaveTextContent(expected);
+    });
+
+    it('displays an error message if the credentials are invalid', async () => {
+      const expected = /Unable to log in, please try again/;
+      const tree = (
+        <AuthProvider>
+          <LoginPage />
+        </AuthProvider>
+      );
+      const { container } = render(tree);
+      await waitForDomChange({ container });
+      const [button, errorDiv, email, password] = await waitForElement(() => [
+        container.querySelector('ion-button')! as HTMLIonButtonElement,
+        container.querySelector('.error-message')!,
+        container.querySelector('#email-input')! as HTMLIonInputElement,
+        container.querySelector('#password-input')! as HTMLIonInputElement,
+      ]);
+      await wait(() => {
+        fireEvent.ionChange(email, 'test@test.com');
+        fireEvent.ionChange(password, 'P@ssword123');
+        fireEvent.click(button);
       });
       expect(errorDiv).toHaveTextContent(expected);
     });

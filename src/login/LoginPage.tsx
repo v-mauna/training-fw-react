@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   IonButton,
   IonContent,
@@ -14,12 +14,29 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import { useForm, Controller } from 'react-hook-form';
+import { useAuthentication } from '../core/auth';
 import { logInOutline } from 'ionicons/icons';
+import { useHistory } from 'react-router';
 
 const LoginPage: React.FC = () => {
-  const { handleSubmit, control, formState, errors } = useForm({
+  const { login, error, status } = useAuthentication();
+  const history = useHistory();
+  const { handleSubmit, control, formState, errors } = useForm<{
+    email: string;
+    password: string;
+  }>({
     mode: 'onChange',
   });
+
+  const handleLogin = async (data: { email: string; password: string }) => {
+    await login(data.email, data.password);
+  };
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      history.replace('/tea');
+    }
+  }, [status, history]);
 
   return (
     <IonPage>
@@ -87,6 +104,7 @@ const LoginPage: React.FC = () => {
             <div>
               {errors.password?.type === 'required' && 'Password is required'}
             </div>
+            {error && <div>{error.message}</div>}
           </div>
         </form>
       </IonContent>
@@ -95,7 +113,7 @@ const LoginPage: React.FC = () => {
           <IonButton
             expand="full"
             disabled={!formState.isValid}
-            onClick={handleSubmit(data => console.log(data))}
+            onClick={handleSubmit(data => handleLogin(data))}
           >
             Sign In
             <IonIcon slot="end" icon={logInOutline} />
