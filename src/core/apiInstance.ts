@@ -1,4 +1,4 @@
-import Axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import Axios, { AxiosRequestConfig } from 'axios';
 import { IdentityService } from './services/IdentityService';
 
 const apiInstance = Axios.create({
@@ -12,9 +12,5 @@ apiInstance.interceptors.request.use((config: AxiosRequestConfig) => {
   config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
-
-apiInstance.interceptors.response.use(
-  (response: AxiosResponse) => response.data,
-);
 
 export default apiInstance;
