@@ -26,6 +26,7 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import './theme/global.css';
+import TeaDetailsPage from './tea/details/TeaDetailsPage';
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -39,6 +40,7 @@ const App: React.FC = () => {
         <IonRouterOutlet>
           <Route path="/login" component={LoginPage} exact={true} />
           <ProtectedRoute path="/tea" component={TeaPage} exact={true} />
+          <ProtectedRoute path="/tea/details/:id" component={TeaDetailsPage} />
           <Route exact path="/" render={() => <Redirect to="/tea" />} />
         </IonRouterOutlet>
       </IonReactRouter>

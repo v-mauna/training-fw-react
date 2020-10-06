@@ -20,11 +20,11 @@ export const useTea = () => {
     return data.map((item: any) => fromJsonToTea(item));
   }, []);
 
-  const getTeaById = async (id: number): Promise<Tea | undefined> => {
+  const getTeaById = useCallback(async (id: number): Promise<Tea> => {
     const url = `${process.env.REACT_APP_DATA_SERVICE}/tea-categories/${id}`;
     const { data } = await apiInstance.get(url);
     return fromJsonToTea(data);
-  };
+  }, []);
 
   const fromJsonToTea = (obj: any): Tea => {
     return {
