@@ -3,9 +3,9 @@ import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, isPlatform } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Plugins } from '@capacitor/core';
-import TeaPage from './tea/TeaPage';
 import LoginPage from './login/LoginPage';
 import { ProtectedRoute } from './core/auth';
+import Tabs from './Tabs';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -26,7 +26,6 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import './theme/global.css';
-import TeaDetailsPage from './tea/details/TeaDetailsPage';
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -38,10 +37,9 @@ const App: React.FC = () => {
     <IonApp>
       <IonReactRouter>
         <IonRouterOutlet>
-          <Route path="/login" component={LoginPage} exact={true} />
-          <ProtectedRoute path="/tea" component={TeaPage} exact={true} />
-          <ProtectedRoute path="/tea/details/:id" component={TeaDetailsPage} />
-          <Route exact path="/" render={() => <Redirect to="/tea" />} />
+          <Route exact path="/login" component={LoginPage} />
+          <ProtectedRoute path="/tabs" component={Tabs} />
+          <Route exact path="/" render={() => <Redirect to="/login" />} />
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>

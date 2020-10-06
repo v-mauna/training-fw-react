@@ -34,7 +34,7 @@ const LoginPage: React.FC = () => {
 
   useEffect(() => {
     if (status === 'authenticated') {
-      history.replace('/tea');
+      history.replace('/tabs');
     }
   }, [status, history]);
 

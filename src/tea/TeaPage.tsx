@@ -57,7 +57,7 @@ const TeaPage: React.FC = () => {
   }, [getTeas]);
 
   const showDetailsPage = (id: number) => {
-    history.push(`/tea/details/${id}`);
+    history.push(`/tabs/tea/details/${id}`);
   };
 
   const handleLogout = async () => {
