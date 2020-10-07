@@ -21,7 +21,7 @@ const Tabs: React.FC<RouteComponentProps> = ({ match }) => (
       <Route
         exact
         path={match.url}
-        render={() => <Redirect to={`${match.url}/tasting-notes`} />}
+        render={() => <Redirect to={`${match.url}/tea`} />}
       />
       <ProtectedRoute exact path={`${match.url}/tea`} component={TeaPage} />
       <ProtectedRoute exact path={`${match.url}/about`} component={AboutPage} />
